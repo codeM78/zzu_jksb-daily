@@ -30,7 +30,7 @@ jobs:
         # 2安装模块--对应配置--仅需要一个第三方模块
       - name: install models
         run: |
-          pip install requests==2.26.0
+          pip install -r requirements.txt 
  
 
 
