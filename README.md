@@ -31,11 +31,12 @@
 * 在`Name`栏输入`id`，`Value`栏输入自己的学号，然后点击`Add secret`。
 * 再次点击`New repository secret`，进入新建页面。
 * 在`Name`栏输入`pwd`，`Value`栏输入自己学号的登录密码，然后点击`Add secret`。  
-* * 再次点击`New repository secret`，进入新建页面。
-* 在`Name`栏输入`MAIL_USER`，`Value`栏输入自己的邮箱账号，然后点击`Add secret`。
-* * 再次点击`New repository secret`，进入新建页面。
-* 在`Name`栏输入`MAIL_PWD`，`Value`栏输入**自己邮箱申请的服务码。注意！！！这里不是邮箱的密码** ，然后点击`Add secret`。
-* * 再次点击`New repository secret`，进入新建页面。
+* 再次点击`New repository secret`，进入新建页面。
+* 在`Name`栏输入`MAIL_USER`，`Value`栏输入自己的邮箱账号 **QQ邮箱**，然后点击`Add secret`。
+* 再次点击`New repository secret`，进入新建页面。
+* 在`Name`栏输入`MAIL_PWD`，`Value`栏输入**自己邮箱申请的授权码。注意！！！这里不是邮箱的密码** ，然后点击`Add secret`。  
+* qq邮箱授权码申请，详细请查看链接qq邮箱官方说明（https://service.mail.qq.com/cgi-bin/help?subtype=1&&no=1001256&&id=28）  
+* 再次点击`New repository secret`，进入新建页面。
 * 在`Name`栏输入`MAIL_TO`，`Value`栏输入自己的邮箱账号，然后点击`Add secret`。
 * 暂不支持多人模式  
 ### 3.启用 Actions
@@ -49,5 +50,5 @@
 
 ---
 ## 📢更新方法
-* 点击`Settings`-->`Options`-->`Dangerous Zone`-->`delete this reposity`，按照提示删除本项目，然后重新部署（）重复上述步骤除了Fork。
+* 点击`Settings`-->`Options`-->`Dangerous Zone`-->`delete this reposity`，按照提示删除本项目，**然后重新部署（）重复上述步骤除了Fork。
 * 使用git，相关命令请自行搜索。
