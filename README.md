@@ -42,7 +42,7 @@
 * 在`Name`栏输入`MAIL_TO`，`Value`栏输入自己的邮箱账号，然后点击`Add secret`。
 * 暂不支持多人模式  
 ### 3.启用 Actions
-* 点击上方的`Actions`，点击绿色按钮确认启用`Actions`功能。
+* 点击上方的`Actions`，点击确认启用`Actions`功能。
 * 点击左侧`ZZU COMMUTE HELPER`，点击`Run workflow`，运行一次项目。
   ![check.PNG](pictures/4.png)
 
@@ -52,5 +52,5 @@
 
 ---
 ## 📢更新方法
-* 点击`Settings`-->`Options`-->`Dangerous Zone`-->`delete this reposity`，按照提示删除本项目，**然后重新部署（）重复上述步骤除了Fork。**
+* 点击`Settings`-->`Options`-->`Dangerous Zone`-->`delete this reposity`，按照提示删除本项目，**然后重新部署（）重复上述步骤。**
 * 使用git，相关命令请自行搜索。
