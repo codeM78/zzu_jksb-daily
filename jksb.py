@@ -213,7 +213,7 @@ def sign_in(id, pwd):
     else:
         logging.info(id+":打卡失败")
         print(id+":打卡失败")
-        return "打卡失败了"
+        return "很遗憾，刚刚打卡失败了。"
 
 
 
