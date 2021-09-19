@@ -209,11 +209,11 @@ def sign_in(id, pwd):
     if("感谢你今日上报健康状况！" in text):
         logging.info(id+":打卡成功")
         print(id+":打卡成功")
-        return "感谢你今日上报健康状况！"
+        return "恭喜您今日打卡成功！"
     else:
         logging.info(id+":打卡失败")
         print(id+":打卡失败")
-        return "打卡失败"
+        return "打卡失败了"
 
 
 
