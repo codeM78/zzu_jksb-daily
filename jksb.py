@@ -10,7 +10,7 @@ from lxml import etree # 可以利用Xpath进行文本解析的库
 import smtplib
 from email.mime.text import MIMEText
 
-#账号 密码
+#账号 密码等信息 Actions部署
 id = os.environ["id"]
 pwd = os.environ["pwd"]
 # 邮箱信息
@@ -18,10 +18,17 @@ MAIL_USER = os.environ["MAIL_USER"] #QQ邮箱账户
 MAIL_PWD = os.environ["MAIL_PWD"]   #QQ邮箱授权码
 MAIL_TO = os.environ["MAIL_TO"]     #QQ邮箱账户
 
+# 本地运行就直接填上相应信息，所有信息需要被双引号""包裹
+# id = "学号"
+# pwd = "密码"
+# MAIL_USER = "QQ邮箱账户"
+# # 这里是授权码--不是账户密码
+# MAIL_PWD = "邮箱授权码"
+# MAIL_TO = "QQ邮箱账户"
 #账号和密码需要被双引号""包裹
 #   eg:
-#       id = "201988880101"
-#       pwd = "password"
+#       id = "学号"
+#       pwd = "密码"
 
 def sign_in(id, pwd):
 
