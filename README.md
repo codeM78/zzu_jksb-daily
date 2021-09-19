@@ -24,7 +24,7 @@
 
 
 ### 1. Fork 仓库
-* 点击页面右上角的`Fork`按钮，将本项目保存到自己的仓库。点击`Fork`左侧的`Star`键可以表示您对本项目和作者的认同。🤩
+* 点击页面右上角的`Fork`按钮，将本项目保存到自己的仓库。点击`Fork`左侧的`Star`键可以表示您对本项目和作者的认同。
   ![fork.PNG](pictures/1.png)
 ### 2. 添加 secrets
 * 点击`Settings`-->`Secrets`-->`New repository secret`，进入新建页面。
@@ -52,5 +52,5 @@
 
 ---
 ## 📢更新方法
-* 点击`Settings`-->`Options`-->`Dangerous Zone`-->`delete this reposity`，按照提示删除本项目，**然后重新部署（）重复上述步骤除了Fork。
+* 点击`Settings`-->`Options`-->`Dangerous Zone`-->`delete this reposity`，按照提示删除本项目，**然后重新部署（）重复上述步骤除了Fork。**
 * 使用git，相关命令请自行搜索。
