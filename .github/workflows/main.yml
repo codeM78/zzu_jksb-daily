@@ -1,0 +1,48 @@
+# 分支的名字--自定义
+name: ZZUjksb
+
+# on设置触发条件
+on:
+    workflow_dispatch:
+    # 设定国际标准时间21点--此处是北京时间凌晨5点。国际标准时间，等于北京时间减去 8 个小时
+    schedule:
+    - cron: '0 21 * * *'
+
+jobs:
+  # build为job名称
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        # 安装谷歌浏览器
+#       - name: install chrome
+#         uses: browser-actions/setup-chrome@latest
+#         with:
+#           chrome-version: beta
+          
+        # 环境部署
+        # 1安装python编译器
+      - name: install Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+        # 2安装模块--对应配置--仅需要一个第三方模块
+      - name: install models
+        run: |
+          pip install requests==2.26.0
+ 
+
+
+       
+        # 让脚本跑起来
+      - name: Run
+      # 配置用户名称和密码--直接利用github的密码机制进行传送
+        env:
+            id: ${{secrets.id}}
+            pwd: ${{secrets.pwd}}
+#             MAIL_USER: ${{secrets.MAIL_USER}}
+#             MAIL_PWD: ${{secrets.MAIL_PWD}}
+#             MAIL_TO: ${{secrets.MAIL_TO}}
+        # 让job跑起来--让python文件运行
+        run: python jksb.py
