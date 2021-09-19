@@ -5,6 +5,7 @@ import time #用于计时重新发送requests请求
 import base64 #用于解密编码
 import logging #用于日志控制
 import os,sys
+from lxml import etree # 可以利用Xpath进行文本解析的库
 # 发送邮件的库
 import smtplib
 from email.mime.text import MIMEText
@@ -12,9 +13,10 @@ from email.mime.text import MIMEText
 #账号 密码
 id = os.environ["id"]
 pwd = os.environ["pwd"]
-MAIL_USER = os.environ["MAIL_USER"]
-MAIL_PWD = os.environ["MAIL_PWD"]
-MAIL_TO = os.environ["MAIL_TO"]
+# 邮箱信息
+MAIL_USER = os.environ["MAIL_USER"] #QQ邮箱账户
+MAIL_PWD = os.environ["MAIL_PWD"]   #QQ邮箱授权码
+MAIL_TO = os.environ["MAIL_TO"]     #QQ邮箱账户
 
 #账号和密码需要被双引号""包裹
 #   eg:
@@ -206,7 +208,13 @@ def sign_in(id, pwd):
     text = r.text.encode(r.encoding).decode(r.apparent_encoding) #解决乱码问题
     r.close()
     del(r)
-    if("感谢你今日上报健康状况！" in text):
+    # 对text文件进行解析
+    tree=etree.HTML(text)
+    # print(type(tree))
+    nodes = tree.xpath('//*[@id="bak_0"]/div[2]/div[2]/div[2]/div[2]')
+    for _ in nodes:
+        msg = _.text
+    if("感谢你今日上报健康状况！" in msg):
         logging.info(id+":打卡成功")
         print(id+":打卡成功")
         
@@ -214,7 +222,7 @@ def sign_in(id, pwd):
         logging.info(id+":打卡失败")
         print(id+":打卡失败")
         
-    return text
+    return msg
 
 
 
