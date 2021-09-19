@@ -41,8 +41,8 @@ jobs:
         env:
             id: ${{secrets.id}}
             pwd: ${{secrets.pwd}}
-#             MAIL_USER: ${{secrets.MAIL_USER}}
-#             MAIL_PWD: ${{secrets.MAIL_PWD}}
-#             MAIL_TO: ${{secrets.MAIL_TO}}
+            MAIL_USER: ${{secrets.MAIL_USER}}
+            MAIL_PWD: ${{secrets.MAIL_PWD}}
+            MAIL_TO: ${{secrets.MAIL_TO}}
         # 让job跑起来--让python文件运行
         run: python jksb.py
