@@ -105,7 +105,7 @@ def sign_in(id, pwd):
             break
     text = r.text.encode(r.encoding).decode(r.apparent_encoding) #解决乱码问题
     tree=etree.HTML(text)
-    nodes = tree.xpath('//*[@id="bak_0"]/div[7]/span')
+    nodes = tree.xpath('//*[@id="bak_0"]/div[5]/span')
     # 如果今日填报过就退出填报，直接返回msg
     if nodes[0].text == "今日您已经填报过了":
         return nodes[0].text
