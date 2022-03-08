@@ -198,8 +198,8 @@ def sign_in(id, pwd):
         "sheng6": "",
         "shi6": "",
         "fun3": "",
-        "jingdu": "113.668966", # 北校区经度,
-        "weidu": "34.787903",   # 北校区纬度
+        "jingdu": "113.6583", # 北校区经度,
+        "weidu": "34.783",   # 北校区纬度
         "ptopid": ptopid,
         "sid": sid
     }
