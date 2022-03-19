@@ -199,7 +199,7 @@ def sign_in(id, pwd):
         "shi6": "",
         "fun3": "",
         #"jingdu": "113.658333", # 北校区经度,jingdu=113.658055
-        #"weidu": "34.783333",   # 北校区纬度,&weidu=34.782567
+        #"weidu": "34.783333",   # 北校区纬度,&weidu=34.782807
         "ptopid": ptopid,
         "sid": sid
     }
