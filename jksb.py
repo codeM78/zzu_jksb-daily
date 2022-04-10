@@ -278,20 +278,23 @@ def sign_in(id, pwd):
 
     r.close()
     del (r)
-    # 对text文件进行解析，解析为xpath可以识别的树文件
+    # 对text文件进行解析
     tree = etree.HTML(text)
+    # print(type(tree))
     # 正常打卡成功返回//*[@id="bak_0"]/div[2]/div[2]/div[2]/div[2]
     nodes = tree.xpath('//*[@id="bak_0"]/div[2]/div[2]/div[2]/div[2]')
+    global msg
     for _ in nodes:
         msg = _.text
 
-    # 非正常页面 //*[@id="bak_0"]/div[2]/div[2]/div[2]/div[2]/li
-    nodes_li = tree.xpath('//*[@id="bak_0"]/div[2]/div[2]/div[2]/div[2]/li')
-    for _ in nodes_li:
-        msg_li = _.text
+    # # 非正常页面 //*[@id="bak_0"]/div[2]/div[2]/div[2]/div[2]/li
+    # nodes_li = tree.xpath('//*[@id="bak_0"]/div[2]/div[2]/div[2]/div[2]/li')
+    # global msg_li
+    # for _ in nodes_li:
+    #     msg_li = _.text
+    #     # print(msg_li)
 
-
-    if ("你今日的健康状态上报信息已通过审核" in msg_li or "感谢你今日上报健康状况！" in msg ):
+    if ("感谢你今日上报健康状况！" in msg):
         logging.info(id + ":打卡成功")
         print(id + ":打卡成功")
 
@@ -302,7 +305,7 @@ def sign_in(id, pwd):
     if msg != None:
         return msg
     else:
-        return msg_li
+        return 'Null，今日打卡失败！'
 
 
 
