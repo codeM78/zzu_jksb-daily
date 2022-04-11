@@ -45,6 +45,10 @@
 * 点击上方的`Actions`，点击确认启用`Actions`功能。
 * 点击左侧`ZZU COMMUTE HELPER`，点击`Run workflow`，运行一次项目。静静等待QQ邮件通知，一般两分钟左右QQ邮箱就收到了。
   ![check.PNG](pictures/3.png)
+* 如果今天还未打卡，就会收到以下提示：
+  ![check.PNG](pictures/5.png)
+* 如果今天已经打卡，也会收到以下提示：
+  ![check.PNG](pictures/6.png)
 
 项目部署完毕后，可以在`Actions`页面点击`View workflow file`查看结果。
   ![check.PNG](pictures/4.png)
