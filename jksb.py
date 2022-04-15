@@ -279,7 +279,7 @@ def sign_in(id, pwd):
     r.close()
     del (r)
     # 匹配成功页面
-    matchObj_succeed = re.findall(r"感谢您今日上报健康状况！", text)
+    matchObj_succeed = re.findall(r"感谢[你您]今日上报健康状况！", text)
     msg = matchObj_succeed[0]
     print(msg)
 
@@ -290,7 +290,7 @@ def sign_in(id, pwd):
     #     msg_li = _.text
     #     # print(msg_li)
 
-    if ("感谢您今日上报健康状况！" in msg):
+    if ("今日上报健康状况！" in msg):
         logging.info(id + ":打卡成功\n")
         print(id + ":打卡成功")
 
