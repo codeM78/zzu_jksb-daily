@@ -278,14 +278,10 @@ def sign_in(id, pwd):
 
     r.close()
     del (r)
-    # 对text文件进行解析
-    tree = etree.HTML(text)
-    # print(type(tree))
-    # 正常打卡成功返回//*[@id="bak_0"]/div[2]/div[2]/div[2]/div[2]
-    nodes = tree.xpath('//*[@id="bak_0"]/div[2]/div[2]/div[2]/div[2]')
-    global msg
-    for _ in nodes:
-        msg = _.text
+    # 匹配成功页面
+    matchObj_succeed = re.findall(r"感谢您今日上报健康状况！", text)
+    msg = matchObj_succeed[0]
+    print(msg)
 
     # # 非正常页面 //*[@id="bak_0"]/div[2]/div[2]/div[2]/div[2]/li
     # nodes_li = tree.xpath('//*[@id="bak_0"]/div[2]/div[2]/div[2]/div[2]/li')
@@ -294,12 +290,12 @@ def sign_in(id, pwd):
     #     msg_li = _.text
     #     # print(msg_li)
 
-    if ("感谢你今日上报健康状况！" in msg):
-        logging.info(id + ":打卡成功")
+    if ("感谢您今日上报健康状况！" in msg):
+        logging.info(id + ":打卡成功\n")
         print(id + ":打卡成功")
 
     else:
-        logging.info(id + ":打卡失败")
+        logging.info(id + ":打卡失败\n")
         print(id + ":打卡失败")
 
     if msg != None:
