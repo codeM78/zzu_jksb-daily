@@ -1,5 +1,5 @@
 # 郑州大学健康上报脚本
-该脚本仅用于 郑州地区 自动打卡郑州大学健康状况上报平台。
+该脚本仅用于 郑州地区 00点04-06分左右自动打卡 郑州大学健康状况上报平台。
 * 其他地区请自行修改源代码
 
 ## 有什么特点？
@@ -46,7 +46,7 @@
 * 点击左侧`ZZU COMMUTE HELPER`，点击`Run workflow`，运行一次项目。静静等待QQ邮件通知，一般两分钟左右QQ邮箱就收到了。
   ![check.PNG](pictures/3.png)
 * 如果今天还未打卡，就会收到以下提示：
-  ![check.PNG](pictures/5.png)
+  ![check.PNG](pictures/7.png)
 * 如果今天已经打卡，也会收到以下提示：
   ![check.PNG](pictures/6.png)
 
