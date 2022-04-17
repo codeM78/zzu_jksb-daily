@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# @Time : 2022/4/9 10:15
+# @Time : 2022/4/17 
 
 
 import re
@@ -124,8 +124,8 @@ def sign_in(id, pwd):
     tree = etree.HTML(text)
     nodes = tree.xpath('//*[@id="bak_0"]/div[5]/span')
     # 如果今日填报过就退出填报，直接返回msg
-    if nodes[0].text == "今日您已经填报过了":
-        return nodes[0].text
+    #if nodes[0].text == "今日您已经填报过了":
+        #return nodes[0].text
     r.close()
     del (r)
 
@@ -225,25 +225,25 @@ def sign_in(id, pwd):
         "myvs_11": "否",
         "myvs_12": "否",
         # "myvs_13": "g",  # 这是green绿码，但是已经对接郑好办，弃用
-        "myvs_13a": "41",
-        "myvs_13b": "4101",
-        "myvs_13c": "河南省.郑州市",
+        "myvs_13a": "41",  # 省份（自治区）：省份编码  对应身份证前两位  河南省=41
+        "myvs_13b": "4101",# 地市：地级市编码 对应身份证前四位  郑州市=4101
+        "myvs_13c": "河南省.郑州市", # 自己填写当前所在地即可
         "myvs_24": "否",
-        "myvs_26": "5",  # 两针疫苗，5是三针
-        "myvs_14b": "",  # 该选项已弃用
-        "memo22": "[待定]",
-        "did": "2",
+        "myvs_26": "5",  # 疫苗接种情况：0是待选；1是1针剂；2是2针剂；3是尚未接种；4是有禁忌症，无法接种；5是三针3针剂
+        #"myvs_14b": "",  # 该选项已弃用
+        "memo22": "请求超时", # [待定] 位置获取情况
+        "did": "2", # 以此为界 往下为hidden值
         "door": "",
-        "day6": "b",
+        "day6": "",# 原值=6 现为空
         "men6": "a",
         "sheng6": "",
         "shi6": "",
+        "fun18": fun18, # fun18 动态变化，用来检测脚本
         "fun3": "",
-        "jingdu": "113.658333", # 北校区经度,jingdu=113.658055
-        "weidu": "34.782222",   # 北校区纬度,&weidu=34.782807  东经113.658333北纬34.7822222
+        "jingdu": "113.658333", #经度： 北校区经度,jingdu=113.658055
+        "weidu": "34.782222",   #纬度： 北校区纬度,&weidu=34.782807  东经113.658333北纬34.7822222
         "ptopid": ptopid,
         "sid": sid,
-        "fun18": fun18,
     }
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36 Edg/100.0.1185.29',
