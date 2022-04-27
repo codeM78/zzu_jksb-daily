@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# @Time : 2022/4/17 
+# @Time : 2022/4/27 
 
 
 import re
@@ -240,8 +240,8 @@ def sign_in(id, pwd):
         "shi6": "",
         "fun18": fun18, # fun18 动态变化，用来检测脚本
         "fun3": "",
-        #"jingdu": "113.658333", #经度：自己校区经度 此处默认北校区经度,jingdu=113.658055
-        #"weidu": "34.782222",   #纬度：自己校区纬度 此处默认北校区纬度,&weidu=34.782807  东经113.658333北纬34.7822222
+        "jingdu": "113.658333", #经度： 北校区经度,jingdu=113.658055
+        "weidu": "34.782222",   #纬度： 北校区纬度,&weidu=34.782807  东经113.658333北纬34.7822222
         "ptopid": ptopid,
         "sid": sid,
     }
@@ -278,30 +278,41 @@ def sign_in(id, pwd):
 
     r.close()
     del (r)
-    # 匹配成功页面
-    matchObj_succeed = re.findall(r"感谢[你您]今日上报健康状况！", text)
-    msg = matchObj_succeed[0]
-    print(msg)
+    
+    # 不返回最后打卡成功页面了，直接再次回到最初填报页面，检查【今日您已经填报过了】
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36 Edg/100.0.1185.29',
+        'referer': 'https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/login'
+    }
+    curr_punch = 0
+    while True:
+        try:
+            r = requests.get(
+                "https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb?ptopid=" + ptopid + "&sid=" + sid + "&fun2=",
+                headers=headers)  # response里含有jksb对应的params
+        except:
+            logging.error("get请求失败")
+            if curr_punch > max_punch:
+                exit()
+            curr_punch += 1
+            time.sleep(120)
+        else:
+            break
+    text = r.text.encode(r.encoding).decode(r.apparent_encoding)  # 解决乱码问题
 
-    # # 非正常页面 //*[@id="bak_0"]/div[2]/div[2]/div[2]/div[2]/li
-    # nodes_li = tree.xpath('//*[@id="bak_0"]/div[2]/div[2]/div[2]/div[2]/li')
-    # global msg_li
-    # for _ in nodes_li:
-    #     msg_li = _.text
-    #     # print(msg_li)
 
-    if ("今日上报健康状况！" in msg):
+    tree = etree.HTML(text)
+    nodes = tree.xpath('//*[@id="bak_0"]/div[5]/span')
+    # 如果今日填报过就退出填报，直接返回msg
+    if nodes[0].text == "今日您已经填报过了":
         logging.info(id + ":打卡成功\n")
-        print(id + ":打卡成功")
-
+        return  nodes[0].text
     else:
         logging.info(id + ":打卡失败\n")
-        print(id + ":打卡失败")
+        return "今日打卡失败"
 
-    if msg != None:
-        return msg
-    else:
-        return 'Null，今日打卡失败！'
+    r.close()
+    del (r)
 
 
 
