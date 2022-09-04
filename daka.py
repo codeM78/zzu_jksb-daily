@@ -210,7 +210,7 @@ def sign_in(id, pwd, name="Turing"):
     # 获取文件当前绝对路径 D:\Python works\Somescripts\APP\Vcode_recognition\test
     path = os.getcwd()
     # 图片存储路径
-    dest = path + r"/pic/vcode.png"
+    dest = path + r"/vcode.png"
     utils.imgurl2pic(imgurl=imgurl, dest=dest)
 
     # 将图片验证码转换为文本
@@ -316,7 +316,7 @@ def sign_in(id, pwd, name="Turing"):
     # 如果今日填报过就退出填报，直接返回msg
     if nodes[0].text == "今日您已经填报过了":
         logging.info(name + ": " + id + ":打卡成功\n")
-        return name + ": 恭喜您，" + nodes[0].text
+        return name + ": 恭喜您lalallalaa，" + nodes[0].text
     else:
         logging.info(name + ": " + id + ":打卡失败\n")
         return name + ": 很遗憾，今日打卡失败！请先自行打卡"
