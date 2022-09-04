@@ -19,7 +19,7 @@
 
 ## 环境依赖
 + `python>=3.8` 建议使用3.10
-+ 用于发送http请求的`requests`模块
++ 详见`requirements.txt`
 
 
 ## 设置
