@@ -23,10 +23,10 @@ jobs:
           
         # 环境部署
         # 1安装python编译器
-      - name: install Python 3.7
+      - name: install Python 3.10
         uses: actions/setup-python@v1
         with:
-          python-version: 3.7
+          python-version: 3.10
         # 2安装模块--对应配置--仅需要一个第三方模块
       - name: install models
         run: |
@@ -45,4 +45,4 @@ jobs:
             MAIL_PWD: ${{secrets.MAIL_PWD}}
             MAIL_TO: ${{secrets.MAIL_TO}}
         # 让job跑起来--让python文件运行
-        run: python jksb.py
+        run: python main.py
