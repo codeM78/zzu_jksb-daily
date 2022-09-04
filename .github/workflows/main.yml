@@ -23,10 +23,10 @@ jobs:
           
         # 环境部署
         # 1安装python编译器
-      - name: install Python 3.10
+      - name: install Python 3.9
         uses: actions/setup-python@v1
         with:
-          python-version: 3.10
+          python-version: 3.9
         # 2安装模块--对应配置--仅需要一个第三方模块
       - name: install models
         run: |
