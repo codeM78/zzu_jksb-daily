@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Time : 2022/4/27 
 
+# jksb.py弃用，后续直接run main.py
 
 import re
 import requests
