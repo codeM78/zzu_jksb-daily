@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-# @Time : 2022/9/4
-# @FileName: daka.py
+# @Time : 2022/4/20 8:32
+# @Author : Ming
+# @FileName: list_daka_old.py
 # @Software: PyCharm
 import random
 import re
@@ -13,8 +14,8 @@ import os, sys
 
 from lxml import etree  # 可以利用Xpath进行文本解析的库
 
-import utils # 导入工具包
-import const # 导入常量包
+import const
+import utils
 
 
 # 用于打卡的脚本
@@ -122,10 +123,10 @@ def sign_in(id, pwd, name="Turing"):
 
     tree = etree.HTML(text)
     nodes = tree.xpath('//*[@id="bak_0"]/div[5]/span')
-    # # 如果今日填报过就退出填报，直接返回msg
-    # if nodes[0].text == "今日您已经填报过了":
-    #     logging.info(name + ": " + id + ":打卡成功\n")
-    #     return name + ": 恭喜您，" + nodes[0].text
+    # 如果今日填报过就退出填报，直接返回msg
+    if nodes[0].text == "今日您已经填报过了":
+        logging.info(name + ": " + id + ":打卡成功\n")
+        return name + ": 恭喜您，" + nodes[0].text
 
     r.close()
     del (r)
@@ -285,7 +286,8 @@ def sign_in(id, pwd, name="Turing"):
         else:
             break
     text = r.text.encode(r.encoding).decode(r.apparent_encoding)  # 解决乱码问题
-
+    # 打印出最后成功的页面  处理一下【你今日的健康状态上报信息已通过审核，今日不能再修改】这个问题  其实也不用解决，因为会返回今日您已经填报过了！
+    # print(text)
 
     r.close()
     del (r)
@@ -309,6 +311,7 @@ def sign_in(id, pwd, name="Turing"):
         else:
             break
     text = r.text.encode(r.encoding).decode(r.apparent_encoding)  # 解决乱码问题
+    # print(text)
 
 
     tree = etree.HTML(text)
@@ -316,7 +319,7 @@ def sign_in(id, pwd, name="Turing"):
     # 如果今日填报过就退出填报，直接返回msg
     if nodes[0].text == "今日您已经填报过了":
         logging.info(name + ": " + id + ":打卡成功\n")
-        return name + ": 恭喜您lalallalaa，" + nodes[0].text
+        return name + ": 恭喜您，" + nodes[0].text
     else:
         logging.info(name + ": " + id + ":打卡失败\n")
         return name + ": 很遗憾，今日打卡失败！请先自行打卡"
