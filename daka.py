@@ -122,9 +122,9 @@ def sign_in(id, pwd, name="Turing"):
     tree = etree.HTML(text)
     nodes = tree.xpath('//*[@id="bak_0"]/div[5]/span')
     # 如果今日填报过就退出填报，直接返回msg
-    if nodes[0].text == "今日您已经填报过了":
-        logging.info(name + ": " + id + ":打卡成功\n")
-        return name + ": 恭喜您，" + nodes[0].text
+    #if nodes[0].text == "今日您已经填报过了":
+        #logging.info(name + ": " + id + ":打卡成功\n")
+        #return name + ": 恭喜您，" + nodes[0].text
 
     r.close()
     del (r)
