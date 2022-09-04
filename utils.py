@@ -70,7 +70,7 @@ def mail(mail_text, mail_to, MAIL_USER, MAIL_PWD):
     msg = MIMEText(mail_text)
 
     # set the mail info
-    msg['Subject'] = "每日图片获取通知"  # 主题
+    msg['Subject'] = mail_text  # 主题
     msg['From'] = MAIL_USER
     msg['To'] = mail_to
 
