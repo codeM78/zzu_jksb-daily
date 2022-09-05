@@ -45,8 +45,9 @@ def imgurl2pic(imgurl, dest: str):
     logging.info("图片获取成功！")
     return "图片获取成功！"
 
+
 # 将数字图片验证码转换为文本
-def pic2vcode(pic_path:str):
+def pic2vcode(pic_path: str):
     '''
 
     :param pic_path: 本地图片验证码路径
@@ -58,24 +59,31 @@ def pic2vcode(pic_path:str):
     vcode = ocr.classification(img_bytes)
     return vcode
 
+
 def pic2vcode_2(pic_path: str):
     ocr = CnOcr()
     img = read_img(pic_path)
     res = ocr.ocr(img)
     return res[0].get("text")
 
+
 # 将大写的数字转换为阿拉伯数字
 def chineseNumber2Num(strNum: str) -> str:
+    # 去掉strNum多余空格
+    strNum = strNum.replace(" ", "")
+
     res = ""
     # 零壹贰叁肆伍陆柒捌玖
-    cnArr = ['零','壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
+    cnArr = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
     for i in range(len(strNum)):
         c = strNum[i]
         for j in range(len(cnArr)):
             if c == cnArr[j]:
                 res = res + str(j)
-
+    # 去掉res多余空格
+    res = res.replace(" ", "")
     return res if res != "" else strNum
+
 
 # 发送邮件的函数
 def mail(mail_text, mail_to, MAIL_USER, MAIL_PWD):
