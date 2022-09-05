@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-# @Time : 2022/9/4 18:53
-# @Author : Ming
+# @Time : 2022/9/6
 # @FileName: utils.py
 # @Software: PyCharm
 import logging
@@ -9,7 +8,7 @@ import re
 import smtplib
 from email.mime.text import MIMEText
 # 验证码模块
-import ddddocr
+# import ddddocr
 
 # 大写数字验证码模块
 from cnocr.utils import read_img
@@ -46,18 +45,18 @@ def imgurl2pic(imgurl, dest: str):
     return "图片获取成功！"
 
 
-# 将数字图片验证码转换为文本
-def pic2vcode(pic_path: str):
-    '''
-
-    :param pic_path: 本地图片验证码路径
-    :return: 文本验证码
-    '''
-    ocr = ddddocr.DdddOcr()
-    with open(pic_path, 'rb') as f:
-        img_bytes = f.read()
-    vcode = ocr.classification(img_bytes)
-    return vcode
+# # 将数字图片验证码转换为文本
+# def pic2vcode(pic_path: str):
+#     '''
+#
+#     :param pic_path: 本地图片验证码路径
+#     :return: 文本验证码
+#     '''
+#     ocr = ddddocr.DdddOcr()
+#     with open(pic_path, 'rb') as f:
+#         img_bytes = f.read()
+#     vcode = ocr.classification(img_bytes)
+#     return vcode
 
 
 def pic2vcode_2(pic_path: str):
