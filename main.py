@@ -47,6 +47,6 @@ MAIL_TO = os.environ["MAIL_TO"]  # QQ邮箱账户
 
 if __name__ == '__main__':
     # 打卡
-    msg = daka.sign_in(id=id, pwd=pwd, name=str(id))
+    msg = daka.sign_in(id=id, pwd=pwd, name=str(id), check_today=0)
     # 发送邮件
     utils.mail(msg, MAIL_TO, MAIL_USER=MAIL_USER, MAIL_PWD=MAIL_PWD)
