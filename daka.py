@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# @Time : 2022/4/20 8:32
-# @Author : Ming
-# @FileName: list_daka_old.py
+# @Time : 2022/9/4
+# @FileName: daka.py
 # @Software: PyCharm
 import random
 import re
@@ -14,18 +13,18 @@ import os, sys
 
 from lxml import etree  # 可以利用Xpath进行文本解析的库
 
-import const
-import utils
-
+import utils # 导入工具包
+import const # 导入常量包
 
 # 用于打卡的脚本
-def sign_in(id, pwd, name="Turing"):
+def sign_in(id, pwd, name="Turing", check_today=1):
     '''
 
     :param id: 学号
     :param pwd: 密码
     :param name: 姓名提示，默认为Turing
-    :return:
+    :param check_today: 检查今日是否已经填报，默认为1（True）
+    :return: 打卡成功与否的msg
     '''
     curr_dir = os.path.dirname(os.path.abspath(__file__))
     r = ""
@@ -124,9 +123,10 @@ def sign_in(id, pwd, name="Turing"):
     tree = etree.HTML(text)
     nodes = tree.xpath('//*[@id="bak_0"]/div[5]/span')
     # 如果今日填报过就退出填报，直接返回msg
-    if nodes[0].text == "今日您已经填报过了":
-        logging.info(name + ": " + id + ":打卡成功\n")
-        return name + ": 恭喜您，" + nodes[0].text
+    if check_today:
+        if nodes[0].text == "今日您已经填报过了":
+            logging.info(name + ": " + id + ":打卡成功\n")
+            return name + ": 恭喜您，" + nodes[0].text
 
     r.close()
     del (r)
@@ -208,7 +208,7 @@ def sign_in(id, pwd, name="Turing"):
 
     # 接下来获取 text中的图片值，并本地化保存
     imgurl = utils.get_img_urls(html=text, index=0)
-    # 获取文件当前绝对路径 D:\Python works\Somescripts\APP\Vcode_recognition\test
+    # 获取当前文件当前绝对路径
     path = os.getcwd()
     # 图片存储路径
     dest = path + r"/vcode.png"
@@ -222,7 +222,7 @@ def sign_in(id, pwd, name="Turing"):
     ptopid = matchObj.group(1)
     sid = matchObj.group(2)
     form = {
-        # 多了个验证码识别,需要将img图片下载下来，然后使用图片识别工具，识别出数字并赋值
+        # 验证码识别
         "myvs_94c": vcode,
         "myvs_1": "否",
         "myvs_2": "否",
@@ -313,6 +313,10 @@ def sign_in(id, pwd, name="Turing"):
     text = r.text.encode(r.encoding).decode(r.apparent_encoding)  # 解决乱码问题
     # print(text)
 
+    # # 获取fun18参数
+    # matchObj_fun18 = re.findall(r'name="fun18" value="(\d+)"', text)
+    # fun18 = matchObj_fun18[0]
+    # # print(f"1:{fun18}")
 
     tree = etree.HTML(text)
     nodes = tree.xpath('//*[@id="bak_0"]/div[5]/span')
@@ -326,5 +330,4 @@ def sign_in(id, pwd, name="Turing"):
 
     r.close()
     del (r)
-
 
