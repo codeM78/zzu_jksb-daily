@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Time : 2022/9/4 18:53
+# @Author : Ming
 # @FileName: utils.py
 # @Software: PyCharm
 import logging
@@ -9,11 +10,13 @@ import smtplib
 from email.mime.text import MIMEText
 # 验证码模块
 import ddddocr
+
+# 大写数字验证码模块
+from cnocr.utils import read_img
+from cnocr import CnOcr
 # 网页请求模块
 import requests
 
-
-# 工具包
 
 # 获取所有的img 默认返回img url列表
 def get_img_urls(html, index=None):
@@ -42,7 +45,7 @@ def imgurl2pic(imgurl, dest: str):
     logging.info("图片获取成功！")
     return "图片获取成功！"
 
-# 将图片验证码转换为文本
+# 将数字图片验证码转换为文本
 def pic2vcode(pic_path:str):
     '''
 
@@ -55,6 +58,24 @@ def pic2vcode(pic_path:str):
     vcode = ocr.classification(img_bytes)
     return vcode
 
+def pic2vcode_2(pic_path: str):
+    ocr = CnOcr()
+    img = read_img(pic_path)
+    res = ocr.ocr(img)
+    return res[0].get("text")
+
+# 将大写的数字转换为阿拉伯数字
+def chineseNumber2Num(strNum: str) -> str:
+    res = ""
+    # 零壹贰叁肆伍陆柒捌玖
+    cnArr = ['零','壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
+    for i in range(len(strNum)):
+        c = strNum[i]
+        for j in range(len(cnArr)):
+            if c == cnArr[j]:
+                res = res + str(j)
+
+    return res if res != "" else strNum
 
 # 发送邮件的函数
 def mail(mail_text, mail_to, MAIL_USER, MAIL_PWD):

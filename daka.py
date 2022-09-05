@@ -215,7 +215,9 @@ def sign_in(id, pwd, name="Turing", check_today=1):
     utils.imgurl2pic(imgurl=imgurl, dest=dest)
 
     # 将图片验证码转换为文本
-    vcode = utils.pic2vcode(dest)
+    vcode_text = utils.pic2vcode_2(dest)
+    # 如果是大写中文数字再转换为阿拉伯数字
+    vcode = utils.chineseNumber2Num(vcode_text)
 
     # DONE  最后提交表单，跳转完成页面
     matchObj = re.search(r'name=\"ptopid\" value=\"(\w+)\".+name=\"sid\" value=\"(\w+)\"', text)
