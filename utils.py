@@ -3,18 +3,40 @@
 # @FileName: utils.py
 # @Software: PyCharm
 import logging
+import os
 import re
 # 邮件发送模块
 import smtplib
 from email.mime.text import MIMEText
+# import private_info
 # 验证码模块
 # import ddddocr
 
-# 大写数字验证码模块
-from cnocr.utils import read_img
-from cnocr import CnOcr
+# # 大写数字验证码模块
+# from cnocr.utils import read_img
+# from cnocr import CnOcr
 # 网页请求模块
 import requests
+# 用来降低服务器方ssl版本
+from requests_toolbelt import SSLAdapter
+
+
+def my_log(filename: str):
+    curr_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # set logging format
+    LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
+    DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
+
+    # 在logging.basicConfig前清理已有 handlers  防止其他包提前使用日志系统，导致level不起作用
+    root_logger = logging.getLogger()
+    for h in root_logger.handlers[:]:
+        root_logger.removeHandler(h)
+
+    # 日志文件保存在该python文件所在目录当中
+    logging.basicConfig(filename=curr_dir + '/' + filename,
+                        level=logging.INFO, format=LOG_FORMAT,
+                        datefmt=DATE_FORMAT)
 
 
 # 获取所有的img 默认返回img url列表
@@ -27,9 +49,11 @@ def get_img_urls(html, index=None):
     '''
     replace_pattern = r'<img.*?/>'  # img标签的正则式
     img_url_pattern = r'.+?src="(\S+)"'  # img_url的正则式
-    replaced_img_url_list = []
     img_url_list = []
     need_replace_list = re.findall(replace_pattern, html)  # 找到所有的img标签
+    if need_replace_list == [] or need_replace_list == None:
+        return need_replace_list
+
     for tag in need_replace_list:
         img_url_list.append(re.findall(img_url_pattern, tag)[0])  # 找到所有的img_url
 
@@ -37,7 +61,12 @@ def get_img_urls(html, index=None):
 
 
 def imgurl2pic(imgurl, dest: str):
-    res = requests.get(imgurl)
+    s = requests.session()
+    s.keep_alive = False  # 关闭多余连接
+    # 降低版本适配ssl
+    adapter = SSLAdapter('TLSv1')
+    s.mount('https://', adapter)
+    res = s.get(imgurl)
 
     with open(dest, 'wb') as f:
         f.write(res.content)
@@ -59,11 +88,12 @@ def imgurl2pic(imgurl, dest: str):
 #     return vcode
 
 
-def pic2vcode_2(pic_path: str):
-    ocr = CnOcr()
-    img = read_img(pic_path)
-    res = ocr.ocr(img)
-    return res[0].get("text")
+# # CnOcr() 实现验证码识别
+# def pic2vcode_2(pic_path: str):
+#     ocr = CnOcr()
+#     img = read_img(pic_path)
+#     res = ocr.ocr(img)
+#     return res[0].get("text")
 
 
 # 将大写的数字转换为阿拉伯数字
@@ -109,3 +139,6 @@ def mail(mail_text, mail_to, MAIL_USER, MAIL_PWD):
     send.send_message(msg)
     # quit QQ EMail
     send.quit()
+
+
+
