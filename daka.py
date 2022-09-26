@@ -88,7 +88,7 @@ def sign_in(id, pwd, name="Turing", check_today=1):
 
     except:
         logging.error("请检查账号" + id + "和密码" + pwd + "是否正确，或检查是否有验证码")
-        return "今日打卡失败！请手动打卡。（error：检查是否有验证码）。"
+        return "今日打卡失败！请手动打卡。（error：请检查账号密码是否正确，或是否有验证码）。"
         exit()
     else:
         logging.info("账号密码正确")
