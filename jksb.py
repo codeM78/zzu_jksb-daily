@@ -280,6 +280,7 @@ def sign_in(id, pwd):
         else:
             break
     text = r.text.encode(r.encoding).decode(r.apparent_encoding)  # 解决乱码问题
+    print(text) # 打印查看信息
 
 
     r.close()
