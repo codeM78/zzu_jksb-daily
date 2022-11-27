@@ -113,10 +113,10 @@ def sign_in(id, pwd, name="Turing", check_today=1):
     text = r.text.encode(r.encoding).decode(r.apparent_encoding)  # 解决乱码问题
     # print(text) # 本人填报按钮页
 
-    # 获取fun18参数
-    matchObj_fun18 = re.findall(r'name="fun18" value="(\d+)"', text)
-    fun18 = matchObj_fun18[0]
-    # print(f"1:{fun18}")
+    # 获取fun218参数
+    matchObj_fun218 = re.findall(r'name="fun218" value="(\d+)"', text)
+    fun218 = matchObj_fun218[0]
+    # print(f"1:{fun218}")
 
     tree = etree.HTML(text)
     nodes = tree.xpath('//*[@id="bak_0"]/div[5]/span')
@@ -164,7 +164,7 @@ def sign_in(id, pwd, name="Turing", check_today=1):
         "men6": "a",
         "sheng6": "",
         "shi6": "",
-        "fun18": fun18,  # fun18 动态变化，用来检测脚本
+        "fun218": fun218,  # fun218 动态变化，用来检测脚本
         "fun3": "",
         # "jingdu": "113.658333",  # 经度： 北校区经度,jingdu=113.658055
         # "weidu": "34.782222",  # 纬度： 北校区纬度,&weidu=34.782807  东经113.658333北纬34.7822222
@@ -225,10 +225,10 @@ def sign_in(id, pwd, name="Turing", check_today=1):
     text = r.text.encode(r.encoding).decode(r.apparent_encoding)  # 解决乱码问题
     # print(text)
 
-    # # 获取fun18参数
-    # matchObj_fun18 = re.findall(r'name="fun18" value="(\d+)"', text)
-    # fun18 = matchObj_fun18[0]
-    # # print(f"1:{fun18}")
+    # # 获取fun218参数
+    # matchObj_fun218 = re.findall(r'name="fun218" value="(\d+)"', text)
+    # fun218 = matchObj_fun218[0]
+    # # print(f"1:{fun218}")
 
     tree = etree.HTML(text)
     nodes = tree.xpath('//*[@id="bak_0"]/div[5]/span')
