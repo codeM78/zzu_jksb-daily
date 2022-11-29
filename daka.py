@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
-# @Time : 2022/9/7
+# @Time : 2022/11/27
 # @FileName: daka.py
 # @Software: PyCharm
-import random
 import re
+import random
+
 import requests
 # 用来降低服务器方ssl版本
 from requests_toolbelt import SSLAdapter
 
 import time  # 用于计时重新发送requests请求
-import base64  # 用于解密编码
 import logging  # 用于日志控制
-import os, sys
+import os
 
 import urllib3
 from lxml import etree  # 可以利用Xpath进行文本解析的库
@@ -38,6 +38,30 @@ def sign_in(id, pwd, name="Turing", check_today=1):
     # 去除 ssl警告
     urllib3.disable_warnings()
 
+    # 设置代理
+    proxy = [
+        {
+            'http': 'http://220.169.232.165:9999',
+            'https': 'http://220.169.232.165:9999',
+        },
+        {
+            'http': 'http://120.41.134.161:8888',
+            'https': 'http://120.41.134.161:8888',
+        },
+        {
+            'http': 'http://182.105.201.172:9999',
+            'https': 'http://182.105.201.172:9999',
+        },
+        {
+            'http': 'http://117.70.41.218:8080',
+            'https': 'http://117.70.41.218:8080',
+        },
+        {
+            'http': 'http://114.233.219.27:8080',
+            'https': 'http://114.233.219.27:8080',
+        },
+    ]
+
     # login
     headers = {
         'User-Agent': const.Const.USER_AGENT.value,
@@ -62,9 +86,9 @@ def sign_in(id, pwd, name="Turing", check_today=1):
             # 降低版本适配ssl
             adapter = SSLAdapter('TLSv1')
             s.mount('https://', adapter)
-            # post请求记得关闭证书错误忽略 verify=False 这里原来是 requests.post
+            # post请求记得关闭证书错误忽略 verify=False
             r = s.post("https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/login", headers=headers, data=form,
-                              timeout=(200, 200), verify=False)  # response为账号密码对应的ptopid和sid信息,timeout=60(sec)
+                              proxies=random.choice(proxy), timeout=(200, 200), verify=False)  # response为账号密码对应的ptopid和sid信息,timeout=60(sec)
             logging.info("成功运行post请求")
         except Exception as e:
             logging.error("请检查网络链接是否正常")
@@ -88,7 +112,7 @@ def sign_in(id, pwd, name="Turing", check_today=1):
 
     except:
         logging.error("请检查账号" + id + "和密码" + pwd + "是否正确，或检查是否有验证码")
-        return "今日打卡失败！请手动打卡。（error：请检查账号密码是否正确，或是否有验证码）。"
+        return "今日打卡失败！请手动打卡。（error：检查是否有验证码）。"
         exit()
     else:
         logging.info("账号密码正确")
@@ -101,7 +125,7 @@ def sign_in(id, pwd, name="Turing", check_today=1):
         try:
             r = s.get(
                 "https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb?ptopid=" + ptopid + "&sid=" + sid + "&fun2=",
-                headers=headers, verify=False)  # response里含有jksb对应的params
+                proxies=random.choice(proxy), headers=headers, verify=False)  # response里含有jksb对应的params
         except:
             logging.error("get请求失败")
             if curr_punch > max_punch:
@@ -113,7 +137,7 @@ def sign_in(id, pwd, name="Turing", check_today=1):
     text = r.text.encode(r.encoding).decode(r.apparent_encoding)  # 解决乱码问题
     # print(text) # 本人填报按钮页
 
-   # 获取fun218参数
+    # 获取fun218参数
     try:
         matchObj_fun218 = re.findall(r'name="fun218" value="(\d+)"', text)
         fun218 = matchObj_fun218[0]
@@ -132,13 +156,111 @@ def sign_in(id, pwd, name="Turing", check_today=1):
     r.close()
     del (r)
 
+    # jksb?with_params  获取参数ptoid和sid
+    matchObj = re.search(r'ptopid=(\w+)\&sid=(\w+)\&', text)
+    ptopid = matchObj.group(1)
+    sid = matchObj.group(2)
+
+    headers = {
+        'User-Agent': const.Const.USER_AGENT.value,
+        'referer': 'https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/login'
+    }
+    curr_punch = 0
+    while True:
+        try:
+            r = s.get(
+                "https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb?ptopid=" + ptopid + "&sid=" + sid + "&fun2=",
+                proxies=random.choice(proxy), headers=headers, verify=False)  # response为jksb表单第一页
+        except:
+            logging.info("第二次get请求失败")
+            while curr_punch > max_punch:
+                exit()
+            curr_punch += 1
+            time.sleep(120)
+        else:
+            break
+    ptopid1 = ptopid
+    sid1 = sid
+
+    text = r.text.encode(r.encoding).decode(r.apparent_encoding)  # 解决乱码问题
+    r.close()
+    del (r)
+    # DONE 填写表单页面
+    matchObj = re.search(r'name=\"ptopid\" value=\"(\w+)\".+name=\"sid\" value=\"(\w+)\".+', text)
+    ptopid = matchObj.group(1)
+    sid = matchObj.group(2)
+
+    fun218 = fun218
+    form = {
+        "day6": "b",
+        "did": "1",
+        "door": "",
+        "fun218": fun218,
+        "men6": "a",
+        "ptopid": ptopid,
+        "sid": sid
+    }
+    headers = {
+        'User-Agent': const.Const.USER_AGENT.value,
+        'Referer': 'https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb?ptopid=' + ptopid1 + '&sid=' + sid1 + '&fun2=',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Host': 'jksb.v.zzu.edu.cn',
+        'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="100", "Microsoft Edge";v="100"',
+        'Origin': 'https://jksb.v.zzu.edu.cn',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'Sec-Fetch-Dest': 'iframe',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'same-origin',
+        'Sec-Fetch-User': '?1',
+        'Upgrade-Insecure-Requests': '1',
+
+    }
+    while True:
+        try:
+            r = s.post("https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb", headers=headers,
+                              proxies=random.choice(proxy), data=form, verify=False)  # response为打卡的第二个表单
+        except:
+            while curr_punch > max_punch:
+                exit()
+            curr_punch += 1
+        else:
+            break
+    text = r.text.encode(r.encoding).decode(r.apparent_encoding)  # 解决乱码问题
+    # print(text)  # 表单填写页
+    r.close()
+    del (r)
+
+    # 接下来获取 text中的图片值，并本地化保存
+    imgurl = utils.get_img_urls(html=text, index=0)
+    # 获取当前文件当前绝对路径
+    path = os.getcwd()
+    # 图片存储路径
+    dest = path + r"/vcode.png"
+    utils.imgurl2pic(imgurl=imgurl, dest=dest)
+
+    # 将图片验证码转换为文本列表
+    vcode_list = utils.baidu_ORC(dest)
+    # 手写api为”“，高精度不为”“ 返回高精度
+    if vcode_list[0] == "" and vcode_list[1] != "":
+        vcode_text = vcode_list[1]
+    # 手写api为”“，高精度为”“ 返回常规
+    elif vcode_list[1] == "" and vcode_list[0] == "":
+        vcode_text = vcode_list[2]
+    # 其余情况返回 手写识别
+    else:
+        vcode_text = vcode_list[0]
+    # 如果是大写中文数字再转换为阿拉伯数字
+    vcode = utils.chineseNumber2Num(vcode_text)
+    logging.info(f"此次获取的图片值为：{vcode_text}--->{vcode}")
 
     # DONE  最后提交表单，跳转完成页面
-    ptopid = ptopid
-    sid = sid
+    matchObj = re.search(r'name=\"ptopid\" value=\"(\w+)\".+name=\"sid\" value=\"(\w+)\"', text)
+    ptopid = matchObj.group(1)
+    sid = matchObj.group(2)
     form = {
         # 多了个验证码识别,需要将img图片下载下来，然后使用图片识别工具，识别出数字并赋值
-        # "myvs_94c": vcode,
+        "myvs_94c": vcode,
         "myvs_1": "否",
         "myvs_2": "否",
         "myvs_3": "否",
@@ -193,7 +315,7 @@ def sign_in(id, pwd, name="Turing", check_today=1):
     while True:
         try:
             r = s.post("https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb", data=form,
-                              headers=headers, verify=False)  # response为完成打卡页面
+                              proxies=random.choice(proxy), headers=headers, verify=False)  # response为完成打卡页面
         except:
             while curr_punch > max_punch:
                 exit()
@@ -216,7 +338,7 @@ def sign_in(id, pwd, name="Turing", check_today=1):
         try:
             r = s.get(
                 "https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb?ptopid=" + ptopid + "&sid=" + sid + "&fun2=",
-                headers=headers, verify=False)  # response里含有jksb对应的params
+                proxies=random.choice(proxy), headers=headers, verify=False)  # response里含有jksb对应的params
         except:
             logging.error("get请求失败")
             if curr_punch > max_punch:
