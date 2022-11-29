@@ -14,7 +14,6 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-	# 安装其他环境必不可少
         uses: actions/checkout@v3
         # 安装谷歌浏览器
 #       - name: install chrome
