@@ -113,10 +113,13 @@ def sign_in(id, pwd, name="Turing", check_today=1):
     text = r.text.encode(r.encoding).decode(r.apparent_encoding)  # 解决乱码问题
     # print(text) # 本人填报按钮页
 
-    # 获取fun218参数
-    matchObj_fun218 = re.findall(r'name="fun218" value="(\d+)"', text)
-    fun218 = matchObj_fun218[0]
-    # print(f"1:{fun218}")
+   # 获取fun218参数
+    try:
+        matchObj_fun218 = re.findall(r'name="fun218" value="(\d+)"', text)
+        fun218 = matchObj_fun218[0]
+    except Exception as e:
+        logging.error("找不到fun218 " + str(e))
+        fun218 = ""
 
     tree = etree.HTML(text)
     nodes = tree.xpath('//*[@id="bak_0"]/div[5]/span')
